@@ -2,11 +2,11 @@ export const TokenAddress = '0x4AD910956D7E08cC9b2BB0e991c9998ee86DDB8d';
 export const FactoryAddress = '0xa622BBa6700C063168feada0F5fba64BdEe0F876';
 export const AuctionAddress = '0x5702D005124b0EeF673202fd5d18ed7a012172e7';
 export const AuctionBNBAddress = '0x0A269272686D566Ca55D0BF88aBf0f3D4422f730';
-export const CollectionAddress = '0x5548553B59d6521119e562EE41862839f37e268a';
+export const CollectionAddress = '0x96854BF886FD0e5580cC781EC05E1954cdeF6ABE';
 
 export const NFTStorageKey =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDUxODlEMzhCRDVmMWE5MmU0RjIzNUVmMDExRTMzMjRiNUZDRkNjZTIiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTYyMDgwNDI1MjI0OSwibmFtZSI6Im1vb25zdGFyIn0.ioVYvZ_sYN-a89eGkMYJNPK-kRVx9vt0CdxGfQmtqg0';
-export const DefaultChainID = 3;
+export const DefaultChainID = 4;
 export const ChainList = {
   1: 'Mainnet',
   3: 'Ropsten',

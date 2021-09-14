@@ -9,15 +9,8 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 import Publish from './pages/Create';
 import Profile from './pages/Profile';
-// import Marketplace from './pages/Marketplace';
-// import BuyNFT from './pages/BuyNFT';
-// import ViewNFT from './pages/ViewNFT';
 import Admin from './pages/Admin';
-import {setProfile} from './actions/user';
 import {updateAccount, updateChainId} from './actions/web3';
-import {updatePrice} from './actions/price';
-import {CoinGeckoAPIForBNB, CoinGeckoAPIForMoonstar} from './constants';
-import restApi from './utils/restApi';
 
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
@@ -35,30 +28,10 @@ const App = () => {
           dispatch(updateChainId(parseInt(Number(_chainId), 10)));
         });
         window.ethereum.on('accountsChanged', (accounts) => {
-          // window.location.reload();
-          console.log('accountsChanges')
           dispatch(updateAccount(accounts[0]));
-          restApi.get(`user/${accounts[0]}`).then(response => {
-            dispatch(setProfile(response.data.user));
-          })
         });
       }
     });
-  });
-  useEffect(() => {
-    let interval = setInterval(async () => {
-      const resBNB = await fetch(CoinGeckoAPIForBNB);
-      const resMOONSTAR = await fetch(CoinGeckoAPIForMoonstar);
-      const returnedBNB = await resBNB.json();
-      const returnedMoonstar = await resMOONSTAR.json();
-      dispatch(
-        updatePrice({
-          bnb: returnedBNB.binancecoin.usd,
-          moonstar: returnedMoonstar.moonstar.usd,
-        })
-      );
-    }, 60000);
-    return () => clearInterval(interval);
   });
   return (
     <>
@@ -68,11 +41,7 @@ const App = () => {
           <Route exact path="/" component={Home} />
           <Route exact path="/create" component={Publish} />
           <Route exact path="/admin" component={Admin} />
-          {/* <Route exact path="/marketplace" component={Marketplace} /> */}
           <Route path="/profile/:account?" component={Profile} />
-          {/* <Route exact path="/buy-nft/:collection/:id" component={BuyNFT} /> */}
-          {/* <Route exact path="/view/:collectionId/:id" component={ViewNFT} /> */}
-          {/* <Route component={NotFound} /> */}
         </Switch>
       </Router>
       <Footer />

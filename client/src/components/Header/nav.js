@@ -103,7 +103,7 @@ const Nav = ({search, onChangeSearch}) => {
                     <a href="/"> HOME </a>
                     {/* <a href="/marketplace"> EXPLORE </a> */}
                     <a href="/create"> CREATE </a>
-                    <a href="/profile"> MY ACCOUNT </a>
+                    {/* <a href="/profile"> MY ACCOUNT </a> */}
                     {/* <a href="/create" className="d-md-none">CREATE</a> */}
                     {/* <form
                         action="/marketplace"

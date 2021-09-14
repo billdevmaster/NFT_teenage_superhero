@@ -7,6 +7,7 @@ import {Spinner} from 'reactstrap';
 import {toast} from 'react-toastify';
 import { NFTStorageKey, CollectionAddress } from '../../constants';
 import { useBeforeunload } from 'react-beforeunload';
+import IPFS from 'ipfs-api';
 
 import {
   _isMetaMaskInstalled,
@@ -15,15 +16,19 @@ import {
   getNFTContractInstance,
 } from '../../utils/web3';
 import restApi from '../../utils/restApi';
+import SampleImage from '../../assets/img/logo.jpg';
+
 const client = new NFTStorage({token: NFTStorageKey});
+const ipfs = new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' });
 
 const Create = () => {
+  const assetType = 'image';
   const web3 = useSelector((state) => state.web3);
-  const [assetType, setAssetType] = useState('image');
+  const [userAddress, setUserAddress] = useState(web3.userAccount);
   const [name, setName] = useState('');
   const [description, setDescription] = useState();
   const [isProcessing, setIsProcessing] = useState(false);
-  const length = 1;
+  const [totalSupply, setTotalSupply] = useState(1);
   
   useBeforeunload((event) => {
     if (isProcessing) {
@@ -31,16 +36,35 @@ const Create = () => {
     }
   });
 
+  useEffect(() => {
+    restApi.get("/getTotalCount")
+    .then( res => {
+      setTotalSupply(res.data.data + 2)
+    })
+    .catch( err => {
+      console.log(err)
+    })
+  }, [])
+
   // Create NFT
   const createNFT = async (e) => {
     e.preventDefault();
     const isValidNetwork = await _isValidChainId();
+    
+    if (!userAddress) {
+      toast.error(
+        'Connect metamask '
+      );
+      return;
+    }
+
     if (!isValidNetwork) {
       toast.error(
         'Unsupported network. Please change your network into BSC Testnet '
       );
       return;
     }
+    
     if (name === '') {
       toast.error('Please input Name');
       return;
@@ -49,59 +73,59 @@ const Create = () => {
       toast.error('Please input description');
       return;
     }
+
     setIsProcessing(true);
-    // const result = await ipfs.files.add(Buffer.from(buffer));
-    // const cid = await client.storeDirectory([
-    //   new File(
-    //     [
-    //       JSON.stringify({
-    //         name: name,
-    //         description: description,
-    //         assetType: assetType,
-    //         // image: `https://ipfs.io/ipfs/${result[0].hash}`,
-    //         image: `https://ipfs.io/ipfs/QmT3vmBsVnrfMtLWCiyx7GyFdnbrL2aKD2xbYydHeUUmth`,
-    //       }),
-    //     ],
-    //     'metadata.json'
-    //   ),
-    // ]);
-    const {ethereum} = window;
-    const web3 = new Web3(ethereum);
+
+    const buffer = Buffer.from(SampleImage)
+    const result = await ipfs.files.add(Buffer.from(buffer));
+    
+    const cid = await client.storeDirectory([
+      new File(
+        [
+          JSON.stringify({
+            name: name,
+            description: description,
+            assetType: assetType,
+            image: `https://ipfs.io/ipfs/${result[0].hash}`,
+            // image: `https://ipfs.io/ipfs/QmT3vmBsVnrfMtLWCiyx7GyFdnbrL2aKD2xbYydHeUUmth`,
+          }),
+        ],
+        'metadata.json'
+      ),
+    ]);
+
     try {
       const nftContract = getNFTContractInstance(CollectionAddress);
       const userAddress = await getDefaultAddres();
 
-      const tokenURI = `none`;
+      const tokenURI = `https://ipfs.io/ipfs/${cid}/metadata.json`;
       const tx = await nftContract.methods
       .mint(
           userAddress,
-          length,
+          totalSupply + 1,
           tokenURI,
-          // currency,
-          // calculatedPrice,
-          // nftStatus,
-          // calculatedRoyalty
         )
         .send({from: userAddress});
+      
       console.log('=== token TxHash ===', tx);
-      const tokenId = tx.events.Transfer.returnValues.tokenId;
+
       await restApi.post('/save_item', {
-          tokenId: length,
+          tokenId: totalSupply + 1,
           collectionId: CollectionAddress,
-          pairKey: '',
           name: name,
           metadata: tokenURI,
-          // image: `https://ipfs.io/ipfs/${result[0].hash}`,
-          image: `https://ipfs.io/ipfs/tokenURI`,
+          image: `https://ipfs.io/ipfs/${result[0].hash}`,
+          // image: `https://ipfs.io/ipfs/QmT3vmBsVnrfMtLWCiyx7GyFdnbrL2aKD2xbYydHeUUmth`,
           creator: userAddress.toLowerCase(),
           owner: userAddress.toLowerCase(),
           description: description,
           txHash: tx.txHash,
       })
-     
+      
       toast.success('NFT created successfully');
       setIsProcessing(false);
-      window.location.href = '/profile';
+      setTotalSupply(totalSupply + 1)
+      // window.location.href = '/profile';
     } catch (err) {
       setIsProcessing(false);
       let message = err.message
@@ -134,13 +158,13 @@ const Create = () => {
       const userAddress = await getDefaultAddres();
       const tx = await nftContract.methods
       .setTokenURI(
-          length,
+          2,
           tokenURI
         )
         .send({from: userAddress});
       console.log('=== token TxHash ===', tx);
       await restApi.post('/update_item', {
-        tokenId: length,
+        tokenId: 2,
         metadata: tokenURI,
         // image: `https://ipfs.io/ipfs/${result[0].hash}`,
         image: `https://ipfs.io/ipfs/QmT3vmBsVnrfMtLWCiyx7GyFdnbrL2aKD2xbYydHeUUmth`,
@@ -151,24 +175,8 @@ const Create = () => {
     }
   }
 
-  const getToken = async () => {
-    try {
-      const nftContract = getNFTContractInstance(CollectionAddress);
-      const userAddress = await getDefaultAddres();
-      const tx = await nftContract.methods
-      .tokenURI(
-          length
-        )
-        .send({from: userAddress});
-      console.log('=== token TxHash ===', tx);
-    }
-    catch (err) {
-      console.log(err);
-    }
-  }
-
   return (
-    <section className="pb-5 mt-5">
+    <section className="pb-5 mt-5" style={{ minHeight: '60vh' }}>
       <div className="container">
         <div className="row mb-4">
           <div className="col-12">
@@ -184,7 +192,38 @@ const Create = () => {
           <div className="col-lg-12 col-md-12 col-sm-12">
             <div>
               <div className="tabs-g">
-                
+                <nav className="nav nav-tabs border-0 row" role="tablist">
+                  <div
+                    className="tab-pane fade show active"
+                    id="tab__fixedprice"
+                  >
+                    <div className="mt-5">
+                      <h6 className="mb-3"> Title </h6>
+                      <div className="group-input mb-3">
+                        <input
+                          type="text"
+                          placeholder="Title of Your NFT"
+                          className="form-air"
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="mt-4">
+                      <h6 className="mb-3"> Description </h6>
+                      <div className="group-input mb-3">
+                        <textarea
+                          placeholder="A short description of your NFT"
+                          className="form-air"
+                          rows="3"
+                          value={description}
+                          onChange={(e) => setDescription(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </nav>
                 <button
                   className="btn btn-primary ml-5 px-5 btn-sm-block"
                   onClick={createNFT}
@@ -192,16 +231,11 @@ const Create = () => {
                   {' '}
                   {!isProcessing ? 'CREAT NFT' : <Spinner size="sm" />}
                 </button>
-                {/* <button
+                <button
                   className="btn btn-primary ml-5 px-5 btn-sm-block"
                   onClick={resetToken}
                 >Test
                 </button>
-                <button
-                  className="btn btn-primary ml-5 px-5 btn-sm-block"
-                  onClick={getToken}
-                >getItem
-                </button> */}
               </div>
             </div>
           </div>

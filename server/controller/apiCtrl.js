@@ -1,45 +1,15 @@
-const collectionModel = require("../models/collectionModel");
 const itemModel = require("../models/itemModel");
 const User = require("../models/usersModel");
-const ItemBuy = require("../models/itemBuyModel");
 const IPFS = require('ipfs-api');
+const Item = require("../models/itemModel");
 const ipfs = new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' });
 
-const saveCollection = (req, res) => {
-    let collection = new collectionModel({
-        ...req.body
-    });
-    collection.save();
-    res.json("success");
-}
-
 const items = async (req, res) => {
-    let query = {};
-    let condition = {};
-    let mysort = {};
-    let sort = "";
-    if (req.query.owner != undefined && req.query.owner != '') {
-        query.owner = req.query.owner;
-    }
-    condition.length = req.query.limit * 1;
-    condition.start = req.query.page * req.query.limit * 1;
-    if (req.query.sortBy == 'mintedAt') {
-        sort = 'createdAt';
-    } else if (req.query.sortBy == 'views') {
-        sort = 'views';
-    } else if (req.query.sortBy == 'price') {
-        sort = 'price';
-    } 
-    if (req.query.sortDir == 'asc') {
-        mysort[sort] = 1;
-    } else {
-        mysort[sort] = -1;
-    }
-    console.log(query);
-    console.log(mysort);
-    console.log(condition);
+    let query = {
+        owner: req.body.owner
+    };
+    
     itemModel.find(query)
-    // .limit(condition.length).skip(condition.start).sort(mysort)
     .then(result => {
         res.json({items: result});
     })
@@ -110,12 +80,18 @@ const getFileBuffer = async ( req, res ) => {
     res.json("okay")
 }
 
+const getTotalCount = async ( req, res ) => {
+    const count = await itemModel.aggregate([
+        {$count: "totalCount"}
+    ])
+    return res.json({data: count[0].totalCount})
+}
 
 module.exports = {
-    saveCollection,
     saveItem,
     viewItem,
     items,
     updateItem,
-    getFileBuffer
+    getFileBuffer,
+    getTotalCount
 };

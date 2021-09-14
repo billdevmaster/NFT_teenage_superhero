@@ -7,9 +7,6 @@ const ItemSchema = mongoose.Schema({
     collectionId: {
         type: String,
     },
-    pairKey: {
-        type: String,
-    },
     name: {
         type: String,
     },
@@ -25,23 +22,11 @@ const ItemSchema = mongoose.Schema({
     owner: {
         type: String,
     },
-    currency: {
-        type: String,
-    },
-    royalties: {
-        type: String,
-    },
     description: {
         type: String,
     },
     txHash: {
         type: String,
-    },
-    status: {
-        type: String,
-    },
-    views: {
-        type: Number
     },
 },
 {

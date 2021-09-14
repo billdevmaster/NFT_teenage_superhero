@@ -15,7 +15,7 @@ const Footer = () => (
           <div className="col-lg-3 text-center text-md-left my-3">
             <a href="/">
               {/* <img src={logoImg} alt="Logo" style={{width: '270px'}}/> */}
-              <h3 style={{ margin: 0, margin: '0px', fontStyle: 'italic', color: 'red' }}>Teenage Superhero</h3>
+              <h3 style={{ margin: 0, margin: '0px', fontStyle: 'italic' }}>Teenage Superhero</h3>
             </a>
           </div>
           <div className="col-lg-6 text-center my-5 my-md-3">

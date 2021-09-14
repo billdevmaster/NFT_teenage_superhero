@@ -28,8 +28,6 @@ import {shortenHex} from '../../utils/helper';
 import {DefaultChainID, ChainList} from '../../constants';
 import {setProfile} from '../../actions/user';
 import {setWeb3, updateAccount} from '../../actions/web3';
-import logoImg from '../../assets/img/moonstartoken-logo.png';
-import logoImgMobile from '../../assets/img/moonstartoken-logo-mobile.png';
 import metamaskImg from '../../assets/img/metamask.png';
 import Nav from './nav';
 
@@ -37,7 +35,6 @@ const Header = () => {
   const dispatch = useDispatch();
   const web3 = useSelector((state) => state.web3);
   const [isOpen, setIsOpen] = useState(false);
-
   /*****************************************/
   /* Detect the MetaMask Ethereum provider */
   /*****************************************/
@@ -45,8 +42,6 @@ const Header = () => {
   const [userAddress, setUserAddress] = useState(web3.userAccount);
   const [chainId, setChainId] = useState(web3.chainId);
   const [search, setSearch] = useState(web3.chainId);
-
-  const isMobile = useMediaQuery({ query: '(max-width: 450px)' })
 
   useEffect(() => {
     const urlSearchParams = new URLSearchParams(window.location.search);
@@ -89,13 +84,11 @@ const Header = () => {
           const _chainId = await getCurrentChainId();
           let usreAccount = await getDefaultAddres();
           const bnbBalance = await getBNBBalance();
-          const tokenBalane = await getTokenBalance();
           dispatch(
             setWeb3({
               web3: web3,
               userAccount: usreAccount,
               chainId: _chainId,
-              tokenBalane: tokenBalane,
               bnbBalance: bnbBalance,
             })
           );
@@ -122,7 +115,7 @@ const Header = () => {
             <div className="header-top__brand">
               <a href="/" className="header-top__brand-logo">
                 {/* <img src={isMobile ? logoImgMobile : logoImg} alt="" /> */}
-                <h3 style={{ margin: 0, margin: '0px', fontStyle: 'italic', color: 'red' }}>Teenage Superhero</h3>
+                <h3 style={{ margin: 0, margin: '0px', fontStyle: 'italic' }}>Teenage Superhero</h3>
               </a>
               <div className="header-top__brand-txt d-none d-lg-block">
               <a href="/create">
@@ -131,30 +124,10 @@ const Header = () => {
               </div>
             </div>
             <div className="header-top__search d-none d-xl-block">
-              {/* <form action="/marketplace" method="GET" className="form-search">
-                <input
-                  type="text"
-                  name="search"
-                  value={search}
-                  onChange={(e) => onChangeSearch(e)}
-                  className="searchFrm"
-                  placeholder="I am looking for..."
-                />
-                <button type='submit' className="btn btn-primary">
-                  {' '}
-                  <i className="fas fa-search" style={{fontSize: '18px'}}></i>{' '}
-                </button>
-              </form> */}
             </div>
             <div className="header-top__toolbar">
               <div className="header-top__toolbar-nav">
                 <Nav search={search} onChangeSearch={onChangeSearch} />
-              </div>
-              <div className="header-top__toolbar-notifications">
-                {/* <a href="#">
-                  <i className="fas fa-bell"></i>
-                  <span className="counter">3</span>
-                </a> */}
               </div>
               <div className="header-top__toolbar-btn-group">
                 <a
