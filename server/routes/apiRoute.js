@@ -14,6 +14,7 @@ router.get("/view_item", apiCtrl.viewItem);
 router.get("/getTotalCount", apiCtrl.getTotalCount);
 
 router.get("/getFileBuffer", apiCtrl.getFileBuffer);
+router.post("/getSampleImageResult", apiCtrl.getSampleImageResult);
 
 
 module.exports = router;

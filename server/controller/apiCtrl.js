@@ -1,6 +1,7 @@
 const itemModel = require("../models/itemModel");
 const User = require("../models/usersModel");
 const IPFS = require('ipfs-api');
+const fs = require("fs")
 const Item = require("../models/itemModel");
 const ipfs = new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' });
 
@@ -74,13 +75,26 @@ const updateItem = async ( req, res ) => {
 
 const getFileBuffer = async ( req, res ) => {
     const file_path = appRoot + '/assets/1.png';
-    var fileBuffer = Buffer.from(file_path)
-    try {
-        const result = await ipfs.files.add(Buffer.from(fileBuffer));
-        res.json({status: "success", result: result})
-    } catch (err) {
-        console.log(err)
-    }
+    fs.readFile(file_path, async (err, buffer) => {
+        try {
+            const result = await ipfs.files.add(Buffer.from(buffer));
+            res.json({status: "success", result: result})
+        } catch (err) {
+            console.log(err)
+        }
+    })
+}
+
+const getSampleImageResult = async ( req, res ) => {
+    const file_path = appRoot + '/assets/sample.jpg';
+    fs.readFile(file_path, async (err, buffer) => {
+        try {
+            const result = await ipfs.files.add(Buffer.from(buffer));
+            res.json({status: "success", result: result})
+        } catch (err) {
+            console.log(err)
+        }
+    })
 }
 
 const getTotalCount = async ( req, res ) => {
@@ -96,5 +110,6 @@ module.exports = {
     items,
     updateItem,
     getFileBuffer,
-    getTotalCount
+    getTotalCount,
+    getSampleImageResult
 };

@@ -5,6 +5,7 @@ import {NFTStorage} from 'nft.storage';
 import Web3 from 'web3';
 import {Spinner} from 'reactstrap';
 import {toast} from 'react-toastify';
+import {fs} from 'fs'
 import { NFTStorageKey, CollectionAddress } from '../../constants';
 import { useBeforeunload } from 'react-beforeunload';
 import IPFS from 'ipfs-api';
@@ -76,66 +77,70 @@ const Create = () => {
     }
 
     setIsProcessing(true);
-
-    const buffer = Buffer.from(SampleImage)
-    const result = await ipfs.files.add(Buffer.from(buffer));
+    axios.post("/api/getSampleImageResult")
+    .then( async res => {
+      const result = res.data.result;
+      try {
+        const cid = await client.storeDirectory([
+          new File(
+            [
+              JSON.stringify({
+                name: name,
+                description: description,
+                assetType: assetType,
+                image: `https://ipfs.io/ipfs/${result[0].hash}`,
+                // image: `https://ipfs.io/ipfs/QmT3vmBsVnrfMtLWCiyx7GyFdnbrL2aKD2xbYydHeUUmth`,
+              }),
+            ],
+            'metadata.json'
+          ),
+        ]);
     
-    const cid = await client.storeDirectory([
-      new File(
-        [
-          JSON.stringify({
-            name: name,
-            description: description,
-            assetType: assetType,
-            image: `https://ipfs.io/ipfs/${result[0].hash}`,
-            // image: `https://ipfs.io/ipfs/QmT3vmBsVnrfMtLWCiyx7GyFdnbrL2aKD2xbYydHeUUmth`,
-          }),
-        ],
-        'metadata.json'
-      ),
-    ]);
-
-    try {
-      const nftContract = getNFTContractInstance(CollectionAddress);
-      const userAddress = await getDefaultAddres();
-
-      const tokenURI = `https://ipfs.io/ipfs/${cid}/metadata.json`;
-      const tx = await nftContract.methods
-      .mint(
-          userAddress,
-          totalSupply + 1,
-          tokenURI,
-        )
-        .send({from: userAddress});
-      
-      console.log('=== token TxHash ===', tx);
-
-      await axios.post('/api/save_item', {
-          tokenId: totalSupply + 1,
-          collectionId: CollectionAddress,
-          name: name,
-          metadata: tokenURI,
-          image: `https://ipfs.io/ipfs/${result[0].hash}`,
-          // image: `https://ipfs.io/ipfs/QmT3vmBsVnrfMtLWCiyx7GyFdnbrL2aKD2xbYydHeUUmth`,
-          creator: userAddress.toLowerCase(),
-          owner: userAddress.toLowerCase(),
-          description: description,
-          txHash: tx.txHash,
-      })
-      
-      toast.success('NFT created successfully');
-      setIsProcessing(false);
-      setTotalSupply(totalSupply + 1)
-      // window.location.href = '/profile';
-    } catch (err) {
-      setIsProcessing(false);
-      let message = err.message
-        ? err.message
-        : `Transaction Failed. Please make sure you have sufficient balance and Minimum Balance`;
-      toast.error(message);
-      console.error(err);
-      return;
-    }
+        try {
+          const nftContract = getNFTContractInstance(CollectionAddress);
+          const userAddress = await getDefaultAddres();
+    
+          const tokenURI = `https://ipfs.io/ipfs/${cid}/metadata.json`;
+          const tx = await nftContract.methods
+          .mint(
+              userAddress,
+              totalSupply + 1,
+              tokenURI,
+            )
+            .send({from: userAddress});
+          
+          console.log('=== token TxHash ===', tx);
+    
+          await axios.post('/api/save_item', {
+              tokenId: totalSupply + 1,
+              collectionId: CollectionAddress,
+              name: name,
+              metadata: tokenURI,
+              image: `https://ipfs.io/ipfs/${result[0].hash}`,
+              // image: `https://ipfs.io/ipfs/QmT3vmBsVnrfMtLWCiyx7GyFdnbrL2aKD2xbYydHeUUmth`,
+              creator: userAddress.toLowerCase(),
+              owner: userAddress.toLowerCase(),
+              description: description,
+              txHash: tx.txHash,
+          })
+          
+          toast.success('NFT created successfully');
+          setIsProcessing(false);
+          setTotalSupply(totalSupply + 1)
+          // window.location.href = '/profile';
+        } catch (err) {
+          setIsProcessing(false);
+          let message = err.message
+            ? err.message
+            : `Transaction Failed. Please make sure you have sufficient balance and Minimum Balance`;
+          toast.error(message);
+          console.error(err);
+          return;
+        }
+      } catch (err) {
+          console.log(err)
+      }
+    })
   };
 
   const resetToken = async () => {
@@ -162,13 +167,13 @@ const Create = () => {
         const userAddress = await getDefaultAddres();
         const tx = await nftContract.methods
         .setTokenURI(
-            2,
+            5,
             tokenURI
           )
           .send({from: userAddress});
         console.log('=== token TxHash ===', tx);
         await axios.post('/api/update_item', {
-          tokenId: 2,
+          tokenId: 5,
           metadata: tokenURI,
           image: `https://ipfs.io/ipfs/${result[0].hash}`,
           image: `https://ipfs.io/ipfs/QmT3vmBsVnrfMtLWCiyx7GyFdnbrL2aKD2xbYydHeUUmth`,
