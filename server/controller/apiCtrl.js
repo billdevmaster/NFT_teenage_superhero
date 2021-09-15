@@ -77,7 +77,7 @@ const getFileBuffer = async ( req, res ) => {
     var fileBuffer = Buffer.from(file_path)
     try {
         const result = await ipfs.files.add(Buffer.from(fileBuffer));
-        res.json({status: "success", data: result})
+        res.json({status: "success", result: result})
     } catch (err) {
         console.log(err)
     }
