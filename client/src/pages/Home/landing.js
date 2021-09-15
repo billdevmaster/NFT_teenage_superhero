@@ -1,6 +1,6 @@
 import React from 'react';
 import spaceBack from '../../assets/img/spaceback.jpg';
-import { CollectionAddress } from '../../constants';
+import { OpenseaUrl, CollectionName } from '../../constants';
 const Landing = () => {
   return (
     <>
@@ -26,7 +26,7 @@ const Landing = () => {
               Explore the our collection on opensea.
             </h1>
             <a
-              href={`https://testnets.opensea.io/collection/test-hero2`}
+              href={`${OpenseaUrl}/collection/${CollectionName}`}
               className="btn btn-primary-outline btn-min-width"
               data-aos="fade-up"
               data-aos-delay="600"

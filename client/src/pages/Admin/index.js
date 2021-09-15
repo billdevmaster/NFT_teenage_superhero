@@ -34,6 +34,16 @@ const Home = () => {
   }, );
 
   const setMultiNfts = async () => {
+    if (start > end) {
+      toast.warning(`this is smaller than end`);
+      setStart(0)
+      return;
+    }
+    if (end <= start) {
+      toast.warning(`this is bigger than start`);
+      setEnd(start)
+      return;
+    }
     let tokenIds = [];
     for (let i = start; i <= end; i++) {
       tokenIds.push(i);
@@ -55,8 +65,8 @@ const Home = () => {
           new File(
             [
               JSON.stringify({
-                name: "teenager1",
-                description: "descirption",
+                name: `Teenage SupreHero${tokenIds[i]}`,
+                description: 'This is Teenage Superhero NFT',
                 assetType: "image",
                 image: `https://ipfs.io/ipfs/${imageResults[i]}`,
               }),
@@ -127,8 +137,8 @@ const Home = () => {
         new File(
           [
             JSON.stringify({
-              name: "teenager1",
-              description: "descirption",
+              name: `Teenage SupreHero${tokenId + 1}`,
+              description: 'This is Teenage Superhero NFT',
               assetType: "image",
               image: `https://ipfs.io/ipfs/${result[0].hash}`,
               // image: `https://ipfs.io/ipfs/Qmf8rVgo2NZRVTvyv5nwEfzF8Z9ex8q4aentF8dgfhbQCX`,
@@ -212,11 +222,7 @@ const Home = () => {
                       setStart(0)
                       return;
                     }
-                    if (e.target.value > end) {
-                      toast.warning(`this is smaller than end`);
-                      setStart(0)
-                      return;
-                    }
+                    
                     setStart(e.target.value)
                   }}
                 />
@@ -237,11 +243,7 @@ const Home = () => {
                       return;
                     }
 
-                    if (e.target.value <= start) {
-                      toast.warning(`this is bigger than start`);
-                      setEnd(start)
-                      return;
-                    }
+                    
                     setEnd(e.target.value)
                   }}
                 />

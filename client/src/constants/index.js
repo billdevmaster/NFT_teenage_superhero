@@ -28,6 +28,9 @@ export const CoinGeckoAPIForMoonstar =
 export const OpenseaApiUrl = 
   'https://testnets-api.opensea.io';
 
+export const OpenseaUrl = 
+  'https://testnets.opensea.io/';
+
 export const CollectionName = 
   'test_hero3';
 //

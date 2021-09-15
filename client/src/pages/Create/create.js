@@ -30,12 +30,23 @@ const Create = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [totalCount, setTotalCount] = useState(0);
   
   useBeforeunload((event) => {
     if (isProcessing) {
       event.preventDefault();
     }
   });
+
+  useEffect(() => {
+    axios.get("/api/getTotalCount")
+    .then(res => {
+      setTotalCount(res.data);
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  }, );
 
   // Create NFT
   const createNFT = async (e) => {
@@ -71,7 +82,7 @@ const Create = () => {
         new File(
           [
             JSON.stringify({
-              name: 'Teenage SupreHero',
+              name: `Teenage SupreHero${totalCount + 1}`,
               description: 'This is Teenage Superhero NFT',
               assetType: assetType,
               // image: `https://ipfs.io/ipfs/${result[0].hash}`,
@@ -106,7 +117,7 @@ const Create = () => {
         .catch(err => {
           console.log(err)
         });
-        
+
         await axios.post('/api/save_item', {
             tokenId: tokenId,
             collectionId: CollectionAddress,
