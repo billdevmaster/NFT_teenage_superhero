@@ -24,6 +24,12 @@ export const CoinGeckoAPIForBNB =
 
 export const CoinGeckoAPIForMoonstar =
   'https://api.coingecko.com/api/v3/simple/price?ids=MOONSTAR&vs_currencies=usd';
+
+export const OpenseaApiUrl = 
+  'https://testnets-api.opensea.io';
+
+export const CollectionName = 
+  'test_hero3';
 //
 // OLD MARKETPLACE ADDRESSES
 // 0x06B45A2DA9EdbA591a2F28e4CB3f094f9b07D62B

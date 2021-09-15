@@ -9,6 +9,7 @@ router.post("/user/update", userCtrl.update);
 
 router.post("/save_item", apiCtrl.saveItem);
 router.post("/update_item", apiCtrl.updateItem);
+router.post("/updateMultiItem", apiCtrl.updateMultiItem);
 router.get("/item", apiCtrl.items);
 router.get("/view_item", apiCtrl.viewItem);
 router.get("/getTotalCount", apiCtrl.getTotalCount);

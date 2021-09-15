@@ -135,6 +135,22 @@ const getMultiTokenURIs = async (req, res) => {
     }
 }
 
+const updateMultiItem = async ( req, res ) => {
+    let result = "";
+    for(let i = 0; i < req.body.tokenIds.length; i++) {
+        result = await itemModel.update(
+            {tokenId: req.body.tokenIds[i]},
+            {$set: 
+                {
+                    metadata: req.body.tokenURIs[i],
+                    image: 'https://ipfs.io/ipfs/' + req.body.imageResults[i]
+                }
+            }
+        )
+    }
+    res.json("success")
+}
+
 module.exports = {
     saveItem,
     viewItem,
@@ -143,5 +159,6 @@ module.exports = {
     getFileBuffer,
     getTotalCount,
     getSampleImageResult,
-    getMultiTokenURIs
+    getMultiTokenURIs,
+    updateMultiItem
 };

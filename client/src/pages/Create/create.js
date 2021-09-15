@@ -6,7 +6,7 @@ import Web3 from 'web3';
 import {Spinner} from 'reactstrap';
 import {toast} from 'react-toastify';
 import {fs} from 'fs'
-import { NFTStorageKey, CollectionAddress } from '../../constants';
+import { NFTStorageKey, CollectionAddress, OpenseaApiUrl } from '../../constants';
 import { useBeforeunload } from 'react-beforeunload';
 import IPFS from 'ipfs-api';
 
@@ -56,14 +56,14 @@ const Create = () => {
       return;
     }
     
-    if (name === '') {
-      toast.error('Please input Name');
-      return;
-    }
-    if (description === '') {
-      toast.error('Please input description');
-      return;
-    }
+    // if (name === '') {
+    //   toast.error('Please input Name');
+    //   return;
+    // }
+    // if (description === '') {
+    //   toast.error('Please input description');
+    //   return;
+    // }
 
     setIsProcessing(true);
     try {
@@ -71,8 +71,8 @@ const Create = () => {
         new File(
           [
             JSON.stringify({
-              name: name,
-              description: description,
+              name: 'Teenage SupreHero',
+              description: 'This is Teenage Superhero NFT',
               assetType: assetType,
               // image: `https://ipfs.io/ipfs/${result[0].hash}`,
               image: `https://ipfs.io/ipfs/QmbKRhJRdpvN38tm2fMZsaDRjxGQc2xJhe2D1iwzrGq2mi`,
@@ -95,6 +95,18 @@ const Create = () => {
         
         console.log('=== token TxHash ===', tx);
         const tokenId = tx.events.Transfer.returnValues.tokenId
+
+        await delay(2000);
+
+        let url = `${OpenseaApiUrl}/asset/${CollectionAddress.toLocaleLowerCase()}/${tokenId}?force_update=true`;
+        await axios.get(url)
+        .then( async res => {
+          console.log(res)
+        })
+        .catch(err => {
+          console.log(err)
+        });
+        
         await axios.post('/api/save_item', {
             tokenId: tokenId,
             collectionId: CollectionAddress,
@@ -170,6 +182,21 @@ const Create = () => {
     })
   }
 
+  // const updateOnOpensea = async () => {
+  //   let url = `${OpenseaApiUrl}/asset/${CollectionAddress.toLocaleLowerCase()}/${tokenId}?force_update=true`;
+  //   await axios.get(url)
+  //   .then( async res => {
+  //     console.log(res)
+  //   })
+  //   .catch(err => {
+  //     console.log(err)
+  //   });
+  // }
+  const delay = (milisec) => {
+    return new Promise(resolve => {
+      setTimeout(() => { resolve('') }, milisec);
+    })
+  }
   return (
     <section className="pb-5 mt-5" style={{ minHeight: '60vh' }}>
       <div className="container">
@@ -192,7 +219,7 @@ const Create = () => {
                     className="tab-pane fade show active"
                     id="tab__fixedprice"
                   >
-                    <div className="mt-5">
+                    {/* <div className="mt-5">
                       <h6 className="mb-3"> Title </h6>
                       <div className="group-input mb-3">
                         <input
@@ -216,7 +243,7 @@ const Create = () => {
                           onChange={(e) => setDescription(e.target.value)}
                         />
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </nav>
                 <button
@@ -226,11 +253,11 @@ const Create = () => {
                   {' '}
                   {!isProcessing ? 'CREAT NFT' : <Spinner size="sm" />}
                 </button>
-                <button
+                {/* <button
                   className="btn btn-primary ml-5 px-5 btn-sm-block"
-                  onClick={resetToken}
-                >Test
-                </button>
+                  onClick={updateOnOpensea}
+                >Update On Opensea
+                </button> */}
               </div>
             </div>
           </div>
