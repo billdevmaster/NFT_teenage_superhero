@@ -79,7 +79,7 @@ const updateItem = async ( req, res ) => {
 }
 
 const getFileBuffer = async ( req, res ) => {
-    const file_path = appRoot + '/assets/1.png';
+    const file_path = appRoot + '/assets/main_images/' + req.body.tokenId + '.png';
     fs.readFile(file_path, async (err, buffer) => {
         try {
             const result = await ipfs.files.add(Buffer.from(buffer));

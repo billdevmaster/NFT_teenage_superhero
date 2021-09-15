@@ -13,7 +13,7 @@ router.get("/item", apiCtrl.items);
 router.get("/view_item", apiCtrl.viewItem);
 router.get("/getTotalCount", apiCtrl.getTotalCount);
 
-router.get("/getFileBuffer", apiCtrl.getFileBuffer);
+router.post("/getFileBuffer", apiCtrl.getFileBuffer);
 router.post("/getMultiTokenURIs", apiCtrl.getMultiTokenURIs);
 router.post("/getSampleImageResult", apiCtrl.getSampleImageResult);
 
