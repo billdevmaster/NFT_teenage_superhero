@@ -124,13 +124,15 @@ const getMultiTokenURIs = async (req, res) => {
                 const result = await ipfs.files.add(Buffer.from(buffer));
                 console.log(result)
                 tokenURIs.push(result[0].hash)
+                if (tokenURIs.length == tokenIds.length) {
+                    console.log(tokenURIs);
+                    res.json({data: tokenURIs});
+                }
             } catch (err) {
                 console.log(err)
             }
         }))
     }
-    console.log(tokenURIs);
-    res.json({data: tokenURIs});
 }
 
 module.exports = {
