@@ -151,6 +151,21 @@ const updateMultiItem = async ( req, res ) => {
     res.json("success")
 }
 
+const getMintedCount = async ( req, res ) => {
+    let totalCount = 0;
+    const count = await itemModel.aggregate([
+        {
+            $match: {owner: req.body.userAddress.toLowerCase()}
+        },
+        {$count: "totalCount"}
+    ])
+    console.log(count);
+    if (count.length > 0) {
+        totalCount = count[0].totalCount
+    }
+    return res.json(totalCount)
+}
+
 module.exports = {
     saveItem,
     viewItem,
@@ -160,5 +175,6 @@ module.exports = {
     getTotalCount,
     getSampleImageResult,
     getMultiTokenURIs,
-    updateMultiItem
+    updateMultiItem,
+    getMintedCount
 };

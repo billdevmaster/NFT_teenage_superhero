@@ -13,6 +13,7 @@ router.post("/updateMultiItem", apiCtrl.updateMultiItem);
 router.get("/item", apiCtrl.items);
 router.get("/view_item", apiCtrl.viewItem);
 router.get("/getTotalCount", apiCtrl.getTotalCount);
+router.post("/getMintedCount", apiCtrl.getMintedCount);
 
 router.post("/getFileBuffer", apiCtrl.getFileBuffer);
 router.post("/getMultiTokenURIs", apiCtrl.getMultiTokenURIs);

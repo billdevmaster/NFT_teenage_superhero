@@ -31,6 +31,7 @@ const Create = () => {
   const [description, setDescription] = useState();
   const [isProcessing, setIsProcessing] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
+  const [totalMintedCount, setTotalMintedCount] = useState(0);
   
   useBeforeunload((event) => {
     if (isProcessing) {
@@ -45,6 +46,15 @@ const Create = () => {
     })
     .catch(err => {
       console.log(err);
+    });
+
+    axios.post("/api/getMintedCount", {userAddress})
+    .then(res => {
+      setTotalMintedCount(res.data);
+    })
+    .catch(err => {
+      console.log(err);
+      toast.error("Server Error");
     })
   }, );
 
@@ -66,7 +76,13 @@ const Create = () => {
       );
       return;
     }
-    
+
+    // check user minted count is smaller than 10.
+    if (totalMintedCount >= 10) {
+      toast.warning("You have minted 10 NFTs, You can't mint NFT more");
+      return;
+    }
+
     // if (name === '') {
     //   toast.error('Please input Name');
     //   return;
@@ -133,6 +149,8 @@ const Create = () => {
         
         toast.success('NFT created successfully');
         setIsProcessing(false);
+        setTotalMintedCount(totalMintedCount + 1)
+        setTotalCount(totalCount + 1)
       } catch (err) {
         setIsProcessing(false);
         let message = err.message
@@ -213,6 +231,12 @@ const Create = () => {
       <div className="container">
         <div className="row mb-4">
           <div className="col-12">
+            <p>Total Count of NFT is {totalCount}.    You minted {totalMintedCount} NFTs.</p>
+            {totalMintedCount >= 10 ? (
+              <p style={{color: 'red'}}>You minted 10 NFTs, you can't mint more.</p>
+            ):''}
+          </div>
+          <div className="col-12">
             <div className="section-title" style={{display: 'flex'}}>
               <h2 className="section-heading section-heading-after">
                 Create Single NFT 
@@ -260,6 +284,7 @@ const Create = () => {
                 <button
                   className="btn btn-primary ml-5 px-5 btn-sm-block"
                   onClick={createNFT}
+                  disabled={totalMintedCount >= 10 ? true : false}
                 >
                   {' '}
                   {!isProcessing ? 'CREAT NFT' : <Spinner size="sm" />}

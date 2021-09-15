@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import spaceBack from '../../assets/img/spaceback.jpg';
 import { OpenseaUrl, CollectionName } from '../../constants';
+import axios from 'axios';
+
 const Landing = () => {
   return (
     <>

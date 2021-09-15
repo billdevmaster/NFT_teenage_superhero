@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Table from './table';
 import {Spinner} from 'reactstrap';
 import {NFTStorage} from 'nft.storage';
 import {toast} from 'react-toastify';
@@ -203,7 +202,7 @@ const Home = () => {
       {/* <Table /> */}
       <section style={{ minHeight: '60vh' }} className="mt-5 pb-5">
         <div className="row">
-          <div className="row text-center mx-auto">
+          {/* <div className="row text-center mx-auto">
             <h2>set multiple nft token images</h2>
           </div>
           <div className="row text-center mx-auto">
@@ -258,7 +257,7 @@ const Home = () => {
               {' '}
               {!isMultiProcessing ? 'Reset NFT Images' : <Spinner size="sm" />}
             </button>
-          </div>
+          </div> */}
           <div className="row text-center mx-auto mt-5">
             <h2>reset one nft token image</h2>
           </div>
