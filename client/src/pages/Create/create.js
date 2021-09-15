@@ -110,7 +110,7 @@ const Create = () => {
       
       console.log('=== token TxHash ===', tx);
 
-      await restApi.post('/save_item', {
+      await axios.post('/api/save_item', {
           tokenId: totalSupply + 1,
           collectionId: CollectionAddress,
           name: name,
@@ -139,7 +139,7 @@ const Create = () => {
   };
 
   const resetToken = async () => {
-    restApi.get("/getFileBuffer")
+    axios.get("/api/getFileBuffer")
     .then(async res => {
       let result = res.data.result
       const cid = await client.storeDirectory([
@@ -167,7 +167,7 @@ const Create = () => {
           )
           .send({from: userAddress});
         console.log('=== token TxHash ===', tx);
-        await restApi.post('/update_item', {
+        await axios.post('/api/update_item', {
           tokenId: 2,
           metadata: tokenURI,
           image: `https://ipfs.io/ipfs/${result[0].hash}`,
