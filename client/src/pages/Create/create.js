@@ -17,6 +17,7 @@ import {
 } from '../../utils/web3';
 import restApi from '../../utils/restApi';
 import SampleImage from '../../assets/img/logo.jpg';
+import axios from 'axios';
 
 const client = new NFTStorage({token: NFTStorageKey});
 const ipfs = new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' });
@@ -138,41 +139,48 @@ const Create = () => {
   };
 
   const resetToken = async () => {
-    const cid = await client.storeDirectory([
-      new File(
-        [
-          JSON.stringify({
-            name: "tset",
-            description: "tsetas",
-            assetType: "image",
-            // image: `https://ipfs.io/ipfs/${result[0].hash}`,
-            image: `https://ipfs.io/ipfs/QmT3vmBsVnrfMtLWCiyx7GyFdnbrL2aKD2xbYydHeUUmth`,
-          }),
-        ],
-        'metadata.json'
-      ),
-    ]);
-    try {
-      const tokenURI = `https://ipfs.io/ipfs/${cid}/metadata.json`;
-      const nftContract = getNFTContractInstance(CollectionAddress);
-      const userAddress = await getDefaultAddres();
-      const tx = await nftContract.methods
-      .setTokenURI(
-          2,
-          tokenURI
-        )
-        .send({from: userAddress});
-      console.log('=== token TxHash ===', tx);
-      await restApi.post('/update_item', {
-        tokenId: 2,
-        metadata: tokenURI,
-        // image: `https://ipfs.io/ipfs/${result[0].hash}`,
-        image: `https://ipfs.io/ipfs/QmT3vmBsVnrfMtLWCiyx7GyFdnbrL2aKD2xbYydHeUUmth`,
+    restApi.get("/getFileBuffer")
+    .then(async res => {
+      let result = res.data.result
+      const cid = await client.storeDirectory([
+        new File(
+          [
+            JSON.stringify({
+              name: "teenager1",
+              description: "descirption",
+              assetType: "image",
+              image: `https://ipfs.io/ipfs/${result[0].hash}`,
+              // image: `https://ipfs.io/ipfs/QmT3vmBsVnrfMtLWCiyx7GyFdnbrL2aKD2xbYydHeUUmth`,
+            }),
+          ],
+          'metadata.json'
+        ),
+      ]);
+      try {
+        const tokenURI = `https://ipfs.io/ipfs/${cid}/metadata.json`;
+        const nftContract = getNFTContractInstance(CollectionAddress);
+        const userAddress = await getDefaultAddres();
+        const tx = await nftContract.methods
+        .setTokenURI(
+            2,
+            tokenURI
+          )
+          .send({from: userAddress});
+        console.log('=== token TxHash ===', tx);
+        await restApi.post('/update_item', {
+          tokenId: 2,
+          metadata: tokenURI,
+          image: `https://ipfs.io/ipfs/${result[0].hash}`,
+          image: `https://ipfs.io/ipfs/QmT3vmBsVnrfMtLWCiyx7GyFdnbrL2aKD2xbYydHeUUmth`,
+      })
+      }
+      catch (err) {
+        console.log(err);
+      }
+    }) 
+    .catch( err => {
+      console.log(err)
     })
-    }
-    catch (err) {
-      console.log(err);
-    }
   }
 
   return (

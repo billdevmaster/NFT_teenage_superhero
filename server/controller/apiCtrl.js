@@ -76,8 +76,7 @@ const getFileBuffer = async ( req, res ) => {
     const file_path = appRoot + '/assets/1.png';
     var fileBuffer = Buffer.from(file_path)
     const result = await ipfs.files.add(Buffer.from(fileBuffer));
-    console.log(result)
-    res.json("okay")
+    res.json({status: "success", data: result})
 }
 
 const getTotalCount = async ( req, res ) => {
