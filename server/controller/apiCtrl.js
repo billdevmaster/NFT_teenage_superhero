@@ -23,8 +23,13 @@ const saveItem = (req, res) => {
     let item = new itemModel({
         ...req.body
     });
-    item.save();
-    res.json("success");
+    try {
+        item.save()
+        res.json("success");
+    } catch( err ) {
+        console.log(err)
+        res.json("fail");
+    }
 }
 
 const viewItem = (req, res) => {
@@ -98,10 +103,15 @@ const getSampleImageResult = async ( req, res ) => {
 }
 
 const getTotalCount = async ( req, res ) => {
+    let totalCount = 0;
     const count = await itemModel.aggregate([
         {$count: "totalCount"}
     ])
-    return res.json({data: count[0].totalCount})
+    console.log(count);
+    if (count.length > 0) {
+        totalCount = count[0].totalCount
+    }
+    return res.json(totalCount)
 }
 
 module.exports = {
