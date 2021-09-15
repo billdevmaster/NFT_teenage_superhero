@@ -119,7 +119,7 @@ const getMultiTokenURIs = async (req, res) => {
     let tokenIds = req.body.tokenIds;
     for(let i = 0; i < tokenIds.length; i++) {
         const file_path = appRoot + '/assets/main_images/' + tokenIds[i] + ".png";
-        fs.readFile(file_path, async (err, buffer) => {
+        await new Promise(fs.readFile(file_path, async (err, buffer) => {
             try {
                 const result = await ipfs.files.add(Buffer.from(buffer));
                 console.log(result)
@@ -127,7 +127,7 @@ const getMultiTokenURIs = async (req, res) => {
             } catch (err) {
                 console.log(err)
             }
-        })
+        }))
     }
     console.log(tokenURIs);
     res.json({data: tokenURIs});
