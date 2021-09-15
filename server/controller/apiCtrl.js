@@ -114,6 +114,22 @@ const getTotalCount = async ( req, res ) => {
     return res.json(totalCount)
 }
 
+const getMultiTokenURIs = async (req, res) => {
+    let tokenURIs = [];
+    let tokenIds = req.body.tokenIds;
+    for(let i = 0; i < tokenIds.length; i++) {
+        const file_path = appRoot + '/assets/main_images/' + tokenIds[i] + ".png";
+        fs.readFile(file_path, async (err, buffer) => {
+            try {
+                const result = await ipfs.files.add(Buffer.from(buffer));
+                tokenURIs.push(result[0].hash)
+            } catch (err) {
+                console.log(err)
+            }
+        })
+    }
+}
+
 module.exports = {
     saveItem,
     viewItem,
@@ -121,5 +137,6 @@ module.exports = {
     updateItem,
     getFileBuffer,
     getTotalCount,
-    getSampleImageResult
+    getSampleImageResult,
+    getMultiTokenURIs
 };

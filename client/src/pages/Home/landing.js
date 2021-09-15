@@ -26,7 +26,7 @@ const Landing = () => {
               Explore the our collection on opensea.
             </h1>
             <a
-              href={`https://testnets.opensea.io/collection/heroic`}
+              href={`https://testnets.opensea.io/collection/test-hero2`}
               className="btn btn-primary-outline btn-min-width"
               data-aos="fade-up"
               data-aos-delay="600"
