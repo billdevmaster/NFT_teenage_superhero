@@ -32,7 +32,7 @@ export const OpenseaUrl =
   'https://testnets.opensea.io/';
 
 export const CollectionName = 
-  'teenager';
+  'teenager-v2';
 //
 // OLD MARKETPLACE ADDRESSES
 // 0x06B45A2DA9EdbA591a2F28e4CB3f094f9b07D62B
