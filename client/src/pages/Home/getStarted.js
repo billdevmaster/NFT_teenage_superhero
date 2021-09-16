@@ -5,7 +5,10 @@ const GetStarted = () => {
     <section className="section-get-started d-none d-md-block">
       <div className="container text-center">
         <div className="row row-get-started">
-          <img src={Gif}/>
+          <div className="col-md-4"></div>
+          <div className="col-md-4">
+            <img src={Gif}/>
+          </div>
         </div>
       </div>
     </section>
