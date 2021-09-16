@@ -2,11 +2,11 @@ export const TokenAddress = '0x4AD910956D7E08cC9b2BB0e991c9998ee86DDB8d';
 export const FactoryAddress = '0xa622BBa6700C063168feada0F5fba64BdEe0F876';
 export const AuctionAddress = '0x5702D005124b0EeF673202fd5d18ed7a012172e7';
 export const AuctionBNBAddress = '0x0A269272686D566Ca55D0BF88aBf0f3D4422f730';
-export const CollectionAddress = '0x9045eb36f8ccd97bedaa7cb1b4a6fc3eb6c47999';
+export const CollectionAddress = '0x79feadc4399bfb574fd0de5cfdfc795ef47f5fc1';
 
 export const NFTStorageKey =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDUxODlEMzhCRDVmMWE5MmU0RjIzNUVmMDExRTMzMjRiNUZDRkNjZTIiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTYyMDgwNDI1MjI0OSwibmFtZSI6Im1vb25zdGFyIn0.ioVYvZ_sYN-a89eGkMYJNPK-kRVx9vt0CdxGfQmtqg0';
-export const DefaultChainID = 4;
+export const DefaultChainID = 1;
 export const ChainList = {
   1: 'Mainnet',
   3: 'Ropsten',
@@ -26,13 +26,13 @@ export const CoinGeckoAPIForMoonstar =
   'https://api.coingecko.com/api/v3/simple/price?ids=MOONSTAR&vs_currencies=usd';
 
 export const OpenseaApiUrl = 
-  'https://testnets-api.opensea.io';
+  'https://api.opensea.io';
 
 export const OpenseaUrl = 
-  'https://testnets.opensea.io/';
+  'https://opensea.io/';
 
 export const CollectionName = 
-  'teenager-v2';
+  'teenage-super';
 //
 // OLD MARKETPLACE ADDRESSES
 // 0x06B45A2DA9EdbA591a2F28e4CB3f094f9b07D62B

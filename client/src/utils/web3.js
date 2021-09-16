@@ -29,7 +29,7 @@ export const _isValidChainId = async () => {
   //Have to check the ethereum binding on the window object to see if it's installed
   if (_isMetaMaskInstalled()) {
     const chainID = await web3.eth.net.getId();
-    if (chainID === 4) {
+    if (chainID === 1) {
       // BSC testnet for demo version
       return true;
     } else {
