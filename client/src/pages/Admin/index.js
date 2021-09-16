@@ -197,12 +197,28 @@ const Home = () => {
     })
   }
 
+  const deposit = async () => {
+    let depositTokenId = 1;
+    try {
+      const nftContract = getNFTContractInstance(CollectionAddress);
+      const userAddress = await getDefaultAddres();
+      const tx = await nftContract.methods
+      .deposit(
+          depositTokenId,
+        )
+        .send({from: userAddress});
+      console.log('=== token TxHash ===', tx);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <>
       {/* <Table /> */}
       <section style={{ minHeight: '60vh' }} className="mt-5 pb-5">
         <div className="row">
-          {/* <div className="row text-center mx-auto">
+          <div className="row text-center mx-auto">
             <h2>set multiple nft token images</h2>
           </div>
           <div className="row text-center mx-auto">
@@ -257,7 +273,7 @@ const Home = () => {
               {' '}
               {!isMultiProcessing ? 'Reset NFT Images' : <Spinner size="sm" />}
             </button>
-          </div> */}
+          </div>
           <div className="row text-center mx-auto mt-5">
             <h2>reset one nft token image</h2>
           </div>
@@ -283,6 +299,15 @@ const Home = () => {
             >
               {' '}
               {!isProcessing ? 'Reset One NFT image' : <Spinner size="sm" />}
+            </button>
+          </div>
+          <div className="col-lg-12 mx-auto text-center">
+            <button
+              className="btn btn-secondary ml-5 px-5 btn-sm-block"
+              onClick={deposit}
+            >
+              {' '}
+              {!isProcessing ? 'Deposit' : <Spinner size="sm" />}
             </button>
           </div>
         </div>
