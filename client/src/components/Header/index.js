@@ -53,11 +53,11 @@ const Header = () => {
   }, []);
 
 
-  useEffect(() => {
-    setChainId(web3.chainId);
-    if (chainId !== DefaultChainID) setIsOpen(true);
-    else setIsOpen(false);
-  }, [chainId, web3.chainId]);
+  // useEffect(() => {
+  //   setChainId(web3.chainId);
+  //   if (chainId !== DefaultChainID) setIsOpen(true);
+  //   else setIsOpen(false);
+  // }, [chainId, web3.chainId]);
 
   // Change User Account
   useEffect(() => {
