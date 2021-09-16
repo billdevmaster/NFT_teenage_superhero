@@ -301,7 +301,7 @@ const Home = () => {
               {!isProcessing ? 'Reset One NFT image' : <Spinner size="sm" />}
             </button>
           </div>
-          <div className="col-lg-12 mx-auto text-center">
+          {/* <div className="col-lg-12 mx-auto text-center">
             <button
               className="btn btn-secondary ml-5 px-5 btn-sm-block"
               onClick={deposit}
@@ -309,7 +309,7 @@ const Home = () => {
               {' '}
               {!isProcessing ? 'Deposit' : <Spinner size="sm" />}
             </button>
-          </div>
+          </div> */}
         </div>
       </section>
     </>
