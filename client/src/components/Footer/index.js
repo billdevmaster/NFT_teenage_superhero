@@ -23,9 +23,9 @@ const Footer = () => (
               <li className="list-inline-item">
                 <a href="/">HOME</a>
               </li>
-              <li className="list-inline-item">
+              {/* <li className="list-inline-item">
                 <a href="/profile">ACCOUNT</a>
-              </li>
+              </li> */}
               {/* <li className="list-inline-item">
                 <a href="/marketplace">EXPLORE</a>
               </li> */}
