@@ -29,7 +29,7 @@ export const CoinGeckoAPIForMoonstar =
 //   'https://api.opensea.io';
 
 export const OpenseaApiUrl = 
-  'https://test-api.opensea.io';
+  'https://testnets-api.opensea.io';
 
 // export const OpenseaUrl = 
 //   'https://opensea.io/';
