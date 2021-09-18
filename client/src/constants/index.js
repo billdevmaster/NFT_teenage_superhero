@@ -2,7 +2,7 @@ export const TokenAddress = '0x4AD910956D7E08cC9b2BB0e991c9998ee86DDB8d';
 export const FactoryAddress = '0xa622BBa6700C063168feada0F5fba64BdEe0F876';
 export const AuctionAddress = '0x5702D005124b0EeF673202fd5d18ed7a012172e7';
 export const AuctionBNBAddress = '0x0A269272686D566Ca55D0BF88aBf0f3D4422f730';
-export const CollectionAddress = '0x13F471DBC8291957f8Fb6debE3537FCae0873C77';
+export const CollectionAddress = '0x696cc2a07cfd0695c8339cc69576f43de5ab39f4';
 
 export const NFTStorageKey =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDUxODlEMzhCRDVmMWE5MmU0RjIzNUVmMDExRTMzMjRiNUZDRkNjZTIiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTYyMDgwNDI1MjI0OSwibmFtZSI6Im1vb25zdGFyIn0.ioVYvZ_sYN-a89eGkMYJNPK-kRVx9vt0CdxGfQmtqg0';
@@ -38,7 +38,7 @@ export const OpenseaApiUrl =
   'https://testnets.opensea.io/';
 
 export const CollectionName = 
-  'testteenager';
+  'testhero';
 //
 // OLD MARKETPLACE ADDRESSES
 // 0x06B45A2DA9EdbA591a2F28e4CB3f094f9b07D62B
