@@ -98,7 +98,7 @@ const Create = () => {
         new File(
           [
             JSON.stringify({
-              name: `Teenage SupreHero${totalCount + 1}`,
+              // name: `Teenage SupreHero${totalCount + 1}`,
               description: 'This is Teenage Superhero NFT',
               assetType: assetType,
               // image: `https://ipfs.io/ipfs/${result[0].hash}`,

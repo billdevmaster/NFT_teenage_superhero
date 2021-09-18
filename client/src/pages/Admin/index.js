@@ -64,7 +64,7 @@ const Home = () => {
           new File(
             [
               JSON.stringify({
-                name: `Teenage SupreHero${tokenIds[i]}`,
+                // name: `Teenage SupreHero${tokenIds[i]}`,
                 description: 'This is Teenage Superhero NFT',
                 assetType: "image",
                 image: `https://ipfs.io/ipfs/${imageResults[i]}`,
