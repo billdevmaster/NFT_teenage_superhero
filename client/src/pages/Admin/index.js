@@ -17,6 +17,7 @@ const client = new NFTStorage({token: NFTStorageKey});
 const Home = () => {
   const [isProcessing, setIsProcessing] = useState(false)
   const [isMultiProcessing, setIsMutliProcessing] = useState(false)
+  const [isMultimintProcessing, setIsMutlimintProcessing] = useState(false)
   const [start, setStart] = useState(0);
   const [end, setEnd] = useState(1);
   const [mintAmount, setMintAmount] = useState(0);
@@ -213,6 +214,7 @@ const Home = () => {
   const multimint = async () => {
     let depositTokenId = 1;
     try {
+      setIsMutlimintProcessing(true)
       const cid = await client.storeDirectory([
         new File(
           [
@@ -221,7 +223,7 @@ const Home = () => {
               description: 'This is Teenage Superhero NFT',
               assetType: 'image',
               // image: `https://ipfs.io/ipfs/${result[0].hash}`,
-              image: `https://ipfs.io/ipfs/QmbKRhJRdpvN38tm2fMZsaDRjxGQc2xJhe2D1iwzrGq2mi`,
+              image: `http://teenagehero.fun/sample.jpg`,
             }),
           ],
           'metadata.json'
@@ -240,6 +242,7 @@ const Home = () => {
             mintAmount
           )
           .send({from: userAddress});
+      setIsMutlimintProcessing(false)
       // const tx = await nftContract.methods
       // .deposit(
       //     depositTokenId,
@@ -247,6 +250,7 @@ const Home = () => {
       //   .send({from: userAddress});
       // console.log('=== token TxHash ===', tx);
     } catch (err) {
+      setIsMutlimintProcessing(false)
       console.log(err);
     }
   }
@@ -388,7 +392,7 @@ const Home = () => {
               onClick={multimint}
             >
               {' '}
-              {!isProcessing ? 'Multi Mint' : <Spinner size="sm" />}
+              {!isMultimintProcessing ? 'Multi Mint' : <Spinner size="sm" />}
             </button>
           </div>
         </div>
