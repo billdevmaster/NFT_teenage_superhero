@@ -1,4 +1,5 @@
 const itemModel = require("../models/itemModel");
+const mintEnableModel = require("../models/mint-enable");
 const User = require("../models/usersModel");
 const IPFS = require('ipfs-api');
 const fs = require("fs")
@@ -166,6 +167,22 @@ const getMintedCount = async ( req, res ) => {
     return res.json(totalCount)
 }
 
+const changeEnableMinting = async ( req, res ) => {
+    console.log(req.body.value);
+    enabled = await mintEnableModel.findById(req.body.id);
+    if (!enabled) {
+        enabled = new mintEnableModel();
+    }
+    enabled.enabled = req.body.value;
+    enabled.save();
+    res.json("success")
+}
+
+const getEnabled = async ( req, res ) => {
+    enabled = await mintEnableModel.findOne();
+    res.json( {id: enabled._id, enabled: enabled.enabled == 'true' ? true:false } );
+}
+
 module.exports = {
     saveItem,
     viewItem,
@@ -176,5 +193,7 @@ module.exports = {
     getSampleImageResult,
     getMultiTokenURIs,
     updateMultiItem,
-    getMintedCount
+    getMintedCount,
+    changeEnableMinting,
+    getEnabled
 };

@@ -26,7 +26,7 @@ const ipfs = new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' })
 const Create = () => {
   const assetType = 'image';
   const web3 = useSelector((state) => state.web3);
-  const [userAddress, setUserAddress] = useState(web3.userAccount);
+  const [userAddress, setUserAddress] = useState('');
   const [name, setName] = useState('');
   const [description, setDescription] = useState();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -38,6 +38,10 @@ const Create = () => {
       event.preventDefault();
     }
   });
+
+  useEffect(() => {
+    setUserAddress(web3.userAccount);
+  }, [web3.userAccount])
 
   useEffect(() => {
     axios.get("/api/getTotalCount")
@@ -62,17 +66,16 @@ const Create = () => {
   const createNFT = async (e) => {
     e.preventDefault();
     const isValidNetwork = await _isValidChainId();
-    
     if (!userAddress) {
       toast.error(
-        'Connect metamask '
+        'Connect metamask!'
       );
       return;
     }
 
     if (!isValidNetwork) {
       toast.error(
-        'Unsupported network. Please change your network into BSC Testnet '
+        'Unsupported network. Please change your network into Matic(Polygon) '
       );
       return;
     }

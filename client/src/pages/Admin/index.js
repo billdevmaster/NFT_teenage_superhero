@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import {Spinner} from 'reactstrap';
+import { Spinner, FormGroup, Label, Input } from 'reactstrap';
 import {NFTStorage} from 'nft.storage';
 import {toast} from 'react-toastify';
 
@@ -21,6 +21,10 @@ const Home = () => {
   const [end, setEnd] = useState(1);
   const [tokenId, setTokenId] = useState(0);
   const [totalCount, setTotalCount] = useState(-1);
+  const [enabledMinting, setEnabledMinting] = useState({
+    id: '',
+    enabled: false
+  });
 
   useEffect(() => {
     axios.get("/api/getTotalCount")
@@ -30,7 +34,15 @@ const Home = () => {
     .catch(err => {
       console.log(err);
     })
-  }, );
+    axios.get("/api/getEnabled")
+    .then(res => {
+      console.log(res.data);
+      setEnabledMinting(res.data);
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  }, []);
 
   const setMultiNfts = async () => {
     if (start > end) {
@@ -200,17 +212,55 @@ const Home = () => {
   const deposit = async () => {
     let depositTokenId = 1;
     try {
+      const cid = await client.storeDirectory([
+        new File(
+          [
+            JSON.stringify({
+              // name: `Teenage SupreHero${totalCount + 1}`,
+              description: 'This is Teenage Superhero NFT',
+              assetType: 'image',
+              // image: `https://ipfs.io/ipfs/${result[0].hash}`,
+              image: `https://ipfs.io/ipfs/QmbKRhJRdpvN38tm2fMZsaDRjxGQc2xJhe2D1iwzrGq2mi`,
+            }),
+          ],
+          'metadata.json'
+        ),
+      ]);
+
       const nftContract = getNFTContractInstance(CollectionAddress);
       const userAddress = await getDefaultAddres();
+      const tokenURI = `https://ipfs.io/ipfs/${cid}/metadata.json`;
+      console.log(userAddress);
+      console.log(tokenURI);
       const tx = await nftContract.methods
-      .deposit(
-          depositTokenId,
-        )
-        .send({from: userAddress});
-      console.log('=== token TxHash ===', tx);
+        .mintMultiNFT(
+            userAddress,
+            tokenURI,
+          )
+          .send({from: userAddress});
+      // const tx = await nftContract.methods
+      // .deposit(
+      //     depositTokenId,
+      //   )
+      //   .send({from: userAddress});
+      // console.log('=== token TxHash ===', tx);
     } catch (err) {
       console.log(err);
     }
+  }
+
+  const changeEnableMinting = async() => {
+    axios.post("/api/changeEnableMinting", {value: !enabledMinting.enabled, id: enabledMinting.id})
+    .then( res => {
+      console.log(res);
+      setEnabledMinting({
+        ...enabledMinting,
+        enabled: !enabledMinting.enabled
+      })
+    })
+    .catch( err => {
+      console.log(err);
+    })
   }
 
   return (
@@ -301,7 +351,15 @@ const Home = () => {
               {!isProcessing ? 'Reset One NFT image' : <Spinner size="sm" />}
             </button>
           </div>
-          {/* <div className="col-lg-12 mx-auto text-center">
+          <div className="col-lg-12 mx-auto text-center mt-5">
+            <FormGroup check>
+              <Label check>
+                <Input type="checkbox" style={{border: '1px solid white', width: '20px'}} onClick={changeEnableMinting} checked={enabledMinting.enabled}/>
+                &nbsp;&nbsp;&nbsp;Enable Minting
+              </Label>
+            </FormGroup>
+          </div>
+          <div className="col-lg-12 mx-auto text-center">
             <button
               className="btn btn-secondary ml-5 px-5 btn-sm-block"
               onClick={deposit}
@@ -309,7 +367,7 @@ const Home = () => {
               {' '}
               {!isProcessing ? 'Deposit' : <Spinner size="sm" />}
             </button>
-          </div> */}
+          </div>
         </div>
       </section>
     </>

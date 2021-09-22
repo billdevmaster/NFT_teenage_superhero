@@ -138,7 +138,7 @@ const Header = () => {
                   CREATE
                 </a>
                 {userAddress ? (
-                  <a className="btn btn-primary-outline" href="/profile">
+                  <a className="btn btn-primary-outline" href="#">
                     <Blockie
                       opts={{
                         seed: `${userAddress}`,

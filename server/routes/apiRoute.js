@@ -19,5 +19,7 @@ router.post("/getFileBuffer", apiCtrl.getFileBuffer);
 router.post("/getMultiTokenURIs", apiCtrl.getMultiTokenURIs);
 router.post("/getSampleImageResult", apiCtrl.getSampleImageResult);
 
+router.post("/changeEnableMinting", apiCtrl.changeEnableMinting);
+router.get("/getEnabled", apiCtrl.getEnabled);
 
 module.exports = router;
