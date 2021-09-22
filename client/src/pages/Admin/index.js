@@ -79,7 +79,7 @@ const Home = () => {
                 // name: `Teenage SupreHero${tokenIds[i]}`,
                 description: 'This is Teenage Superhero NFT',
                 assetType: "image",
-                image: `https://ipfs.io/ipfs/${imageResults[i]}`,
+                image: `http://teenagehero.fun/${i}.png`,
               }),
             ],
             'metadata.json'
