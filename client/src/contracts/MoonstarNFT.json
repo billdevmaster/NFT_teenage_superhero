@@ -218,6 +218,11 @@
 				"internalType": "string",
 				"name": "tokenURI_",
 				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
 			}
 		],
 		"name": "mintMultiNFT",

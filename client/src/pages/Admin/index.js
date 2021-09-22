@@ -19,6 +19,7 @@ const Home = () => {
   const [isMultiProcessing, setIsMutliProcessing] = useState(false)
   const [start, setStart] = useState(0);
   const [end, setEnd] = useState(1);
+  const [mintAmount, setMintAmount] = useState(0);
   const [tokenId, setTokenId] = useState(0);
   const [totalCount, setTotalCount] = useState(-1);
   const [enabledMinting, setEnabledMinting] = useState({
@@ -209,7 +210,7 @@ const Home = () => {
     })
   }
 
-  const deposit = async () => {
+  const multimint = async () => {
     let depositTokenId = 1;
     try {
       const cid = await client.storeDirectory([
@@ -236,6 +237,7 @@ const Home = () => {
         .mintMultiNFT(
             userAddress,
             tokenURI,
+            mintAmount
           )
           .send({from: userAddress});
       // const tx = await nftContract.methods
@@ -359,13 +361,34 @@ const Home = () => {
               </Label>
             </FormGroup>
           </div>
+          <div className="row text-center mx-auto mt-5">
+            <h2>minting multiple nfts</h2>
+          </div>
+          <div className="row text-center mx-auto">
+            <div className="mt-5 col-lg-4"></div>
+            <div className="mt-5 col-lg-4">
+              <h6 className="mb-3"> Mint Amount </h6>
+              <div className="group-input mb-3">
+                <input
+                  type="number"
+                  placeholder="End token ID"
+                  className="form-air"
+                  value={mintAmount}
+                  onChange={(e) => {
+                    setMintAmount(e.target.value)
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+
           <div className="col-lg-12 mx-auto text-center">
             <button
               className="btn btn-secondary ml-5 px-5 btn-sm-block"
-              onClick={deposit}
+              onClick={multimint}
             >
               {' '}
-              {!isProcessing ? 'Deposit' : <Spinner size="sm" />}
+              {!isProcessing ? 'Multi Mint' : <Spinner size="sm" />}
             </button>
           </div>
         </div>

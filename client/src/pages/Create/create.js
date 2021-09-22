@@ -105,7 +105,8 @@ const Create = () => {
               description: 'This is Teenage Superhero NFT',
               assetType: assetType,
               // image: `https://ipfs.io/ipfs/${result[0].hash}`,
-              image: `https://ipfs.io/ipfs/QmbKRhJRdpvN38tm2fMZsaDRjxGQc2xJhe2D1iwzrGq2mi`,
+              // image: `https://ipfs.io/ipfs/QmbKRhJRdpvN38tm2fMZsaDRjxGQc2xJhe2D1iwzrGq2mi`,
+              image: `http://teenagehero.fun/sample.jpg`,
             }),
           ],
           'metadata.json'
