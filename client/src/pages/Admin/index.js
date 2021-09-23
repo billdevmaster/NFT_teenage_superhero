@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import {useSelector} from 'react-redux';
 import axios from 'axios';
 import { Spinner, FormGroup, Label, Input } from 'reactstrap';
 import {NFTStorage} from 'nft.storage';
@@ -15,10 +16,12 @@ import { NFTStorageKey, CollectionAddress, OpenseaApiUrl } from '../../constants
 const client = new NFTStorage({token: NFTStorageKey});
 
 const Home = () => {
+  const web3 = useSelector((state) => state.web3);
   const [isProcessing, setIsProcessing] = useState(false)
   const [isMultiProcessing, setIsMutliProcessing] = useState(false)
   const [isMultimintProcessing, setIsMutlimintProcessing] = useState(false)
   const [start, setStart] = useState(0);
+  const [userAddress, setUserAddress] = useState('');
   const [end, setEnd] = useState(1);
   const [mintAmount, setMintAmount] = useState(0);
   const [tokenId, setTokenId] = useState(0);
@@ -46,7 +49,25 @@ const Home = () => {
     })
   }, []);
 
+  useEffect(() => {
+    setUserAddress(web3.userAccount);
+  }, [web3.userAccount])
+
   const setMultiNfts = async () => {
+    const isValidNetwork = await _isValidChainId();
+    if (!userAddress) {
+      toast.error(
+        'Connect metamask!'
+      );
+      return;
+    }
+
+    if (!isValidNetwork) {
+      toast.error(
+        'Unsupported network. Please change your network into Matic(Polygon) '
+      );
+      return;
+    }
     if (start > end) {
       toast.warning(`this is smaller than end`);
       setStart(0)
@@ -141,6 +162,20 @@ const Home = () => {
   }
 
   const setOneNft = async () => {
+    const isValidNetwork = await _isValidChainId();
+    if (!userAddress) {
+      toast.error(
+        'Connect metamask!'
+      );
+      return;
+    }
+
+    if (!isValidNetwork) {
+      toast.error(
+        'Unsupported network. Please change your network into Matic(Polygon) '
+      );
+      return;
+    }
     setIsProcessing(true)
     axios.post("/api/getFileBuffer", {tokenId})
     .then( async res => {
@@ -212,6 +247,20 @@ const Home = () => {
   }
 
   const multimint = async () => {
+    const isValidNetwork = await _isValidChainId();
+    if (!userAddress) {
+      toast.error(
+        'Connect metamask!'
+      );
+      return;
+    }
+
+    if (!isValidNetwork) {
+      toast.error(
+        'Unsupported network. Please change your network into Matic(Polygon) '
+      );
+      return;
+    }
     let depositTokenId = 1;
     try {
       setIsMutlimintProcessing(true)
