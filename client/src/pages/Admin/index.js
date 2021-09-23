@@ -264,30 +264,28 @@ const Home = () => {
     let depositTokenId = 1;
     try {
       setIsMutlimintProcessing(true)
-      const cid = await client.storeDirectory([
-        new File(
-          [
-            JSON.stringify({
-              // name: `Teenage SupreHero${totalCount + 1}`,
-              description: 'This is Teenage Superhero NFT',
-              assetType: 'image',
-              // image: `https://ipfs.io/ipfs/${result[0].hash}`,
-              image: `http://teenagehero.fun/sample.jpg`,
-            }),
-          ],
-          'metadata.json'
-        ),
-      ]);
+      // const cid = await client.storeDirectory([
+      //   new File(
+      //     [
+      //       JSON.stringify({
+      //         // name: `Teenage SupreHero${totalCount + 1}`,
+      //         description: 'This is Teenage Superhero NFT',
+      //         assetType: 'image',
+      //         // image: `https://ipfs.io/ipfs/${result[0].hash}`,
+      //         image: `http://teenagehero.fun/sample.jpg`,
+      //       }),
+      //     ],
+      //     'metadata.json'
+      //   ),
+      // ]);
 
       const nftContract = getNFTContractInstance(CollectionAddress);
       const userAddress = await getDefaultAddres();
-      const tokenURI = `https://ipfs.io/ipfs/${cid}/metadata.json`;
+      // const tokenURI = `https://ipfs.io/ipfs/${cid}/metadata.json`;
       console.log(userAddress);
-      console.log(tokenURI);
       const tx = await nftContract.methods
         .mintMultiNFT(
             userAddress,
-            tokenURI,
             mintAmount
           )
           .send({from: userAddress});
