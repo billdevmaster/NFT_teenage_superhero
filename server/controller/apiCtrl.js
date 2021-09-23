@@ -183,6 +183,17 @@ const getEnabled = async ( req, res ) => {
     res.json( {id: enabled._id, enabled: enabled.enabled == 'true' ? true:false } );
 }
 
+const saveMultiItem = async (req, res) => {
+    itemModel.insertMany(req.body.data)
+    .then(result => {
+        console.log(result)
+        res.json("success")
+    })
+    .catch(err => {
+        console.log(err);
+    })
+}
+
 module.exports = {
     saveItem,
     viewItem,
@@ -195,5 +206,6 @@ module.exports = {
     updateMultiItem,
     getMintedCount,
     changeEnableMinting,
-    getEnabled
+    getEnabled,
+    saveMultiItem
 };

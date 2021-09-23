@@ -85,10 +85,10 @@ const Home = () => {
     let tokenURIs = [];
     let imageResults = [];
     setIsMutliProcessing(true)
-    axios.post("/api/getMultiTokenURIs", {tokenIds})
-    .then( async res => {
-      console.log(res);
-      imageResults = res.data.data;
+    // axios.post("/api/getMultiTokenURIs", {tokenIds})
+    // .then( async res => {
+    //   console.log(res);
+    //   imageResults = res.data.data;
       // imageResults = [
       //   "QmdGWScpBZzq8vv8AXgWrnxcdYpBdKXddoob947VAiJYHt",
       //   "QmWCZU8BBsegVdLR6xNzNmkGfPFM1Q7BRXZHJ8Y23xwSva",
@@ -102,7 +102,7 @@ const Home = () => {
                 // name: `Teenage SupreHero${tokenIds[i]}`,
                 description: 'This is Teenage Superhero NFT',
                 assetType: "image",
-                image: `http://teenagehero.fun/${i}.png`,
+                image: `http://teenagehero.fun/${tokenIds[i]}.png`,
               }),
             ],
             'metadata.json'
@@ -141,7 +141,7 @@ const Home = () => {
         await axios.post('/api/updateMultiItem', {
           tokenIds: tokenIds,
           tokenURIs: tokenURIs,
-          imageResults: imageResults,
+          // imageResults: `http://teenagehero.fun/${i}.png`,
         })
         .then(res => {
           setIsMutliProcessing(false)
@@ -155,10 +155,10 @@ const Home = () => {
         setIsMutliProcessing(false)
         console.log(err);
       }
-    })
-    .catch(err => {
-      console.log(err)
-    })
+    // })
+    // .catch(err => {
+    //   console.log(err)
+    // })
   }
 
   const setOneNft = async () => {
@@ -282,20 +282,32 @@ const Home = () => {
       const nftContract = getNFTContractInstance(CollectionAddress);
       const userAddress = await getDefaultAddres();
       // const tokenURI = `https://ipfs.io/ipfs/${cid}/metadata.json`;
-      console.log(userAddress);
       const tx = await nftContract.methods
         .mintMultiNFT(
             userAddress,
             mintAmount
-          )
-          .send({from: userAddress});
-      setIsMutlimintProcessing(false)
-      // const tx = await nftContract.methods
-      // .deposit(
-      //     depositTokenId,
-      //   )
-      //   .send({from: userAddress});
-      // console.log('=== token TxHash ===', tx);
+        )
+        .send({from: userAddress});
+
+      let data = [];
+      console.log(tx);
+      tx.events.Transfer.map(item => {
+        data.push({
+          tokenId: item.returnValues.tokenId,
+          collectionId: CollectionAddress,
+          creator: userAddress,
+          owner: userAddress,
+          txHash: tx.txHash
+        })
+      });
+      console.log(data);
+      axios.post("/api/save_multi_item", { data })
+      .then(res => {
+        setIsMutlimintProcessing(false)
+      })
+      .catch(err => {
+        console.log(err)
+      })
     } catch (err) {
       setIsMutlimintProcessing(false)
       console.log(err);
@@ -355,13 +367,11 @@ const Home = () => {
                   className="form-air"
                   value={end}
                   onChange={(e) => {
-                    if (e.target.value > totalCount) {
-                      toast.warning(`this is smaller than ${totalCount}`);
-                      setEnd(0)
-                      return;
-                    }
-
-                    
+                    // if (e.target.value > totalCount) {
+                    //   toast.warning(`this is smaller than ${totalCount}`);
+                    //   setEnd(0)
+                    //   return;
+                    // }
                     setEnd(e.target.value)
                   }}
                 />

@@ -8,6 +8,7 @@ router.get("/user/:id", userCtrl.user);
 router.post("/user/update", userCtrl.update);
 
 router.post("/save_item", apiCtrl.saveItem);
+router.post("/save_multi_item", apiCtrl.saveMultiItem);
 router.post("/update_item", apiCtrl.updateItem);
 router.post("/updateMultiItem", apiCtrl.updateMultiItem);
 router.get("/item", apiCtrl.items);
