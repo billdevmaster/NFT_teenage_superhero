@@ -170,7 +170,7 @@ const getMintedCount = async ( req, res ) => {
 
 const changeEnableMinting = async ( req, res ) => {
     console.log(req.body.value);
-    enabled = await mintEnableModel.findById(req.body.id);
+    enabled = await mintEnableModel.findById(req.body.id==''?null:req.body.id);
     if (!enabled) {
         enabled = new mintEnableModel();
     }
@@ -181,7 +181,7 @@ const changeEnableMinting = async ( req, res ) => {
 
 const getEnabled = async ( req, res ) => {
     enabled = await mintEnableModel.findOne();
-    res.json( {id: enabled._id, enabled: enabled.enabled == 'true' ? true:false } );
+    res.json( {id: enabled!=null?enabled._id:'', enabled: enabled!=null&&enabled.enabled == 'true' ? true:false } );
 }
 
 const saveMultiItem = async (req, res) => {
