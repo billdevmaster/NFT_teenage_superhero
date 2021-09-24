@@ -103,17 +103,17 @@ const Home = () => {
           console.log('=== token TxHash ===', tx);
   
           // force_update on openseas.
-          for (let i = 0; i < tokenIds.length; i++) {
-            let url = `${OpenseaApiUrl}/asset/${CollectionAddress.toLocaleLowerCase()}/${tokenIds[i]}?force_update=true`;
-            await axios.get(url)
-            .then( async res => {
-              await delay(1500)
-            })
-            .catch(err => {
-              console.log(err)
-            });
-            console.log("test**", i);
-          }
+          // for (let i = 0; i < tokenIds.length; i++) {
+          //   let url = `${OpenseaApiUrl}/asset/${CollectionAddress.toLocaleLowerCase()}/${tokenIds[i]}?force_update=true`;
+          //   await axios.get(url)
+          //   .then( async res => {
+          //     await delay(1500)
+          //   })
+          //   .catch(err => {
+          //     console.log(err)
+          //   });
+          //   console.log("test**", i);
+          // }
   
           // update server data
           await axios.post('/api/updateMultiItem', {

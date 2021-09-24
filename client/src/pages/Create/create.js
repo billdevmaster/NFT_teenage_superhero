@@ -32,6 +32,10 @@ const Create = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
   const [totalMintedCount, setTotalMintedCount] = useState(0);
+  const [enabledMinting, setEnabledMinting] = useState({
+    id: '',
+    enabled: false
+  });
   
   useBeforeunload((event) => {
     if (isProcessing) {
@@ -60,10 +64,25 @@ const Create = () => {
       console.log(err);
       toast.error("Server Error");
     })
-  }, );
+
+    axios.get("/api/getEnabled")
+    .then(res => {
+      console.log(res.data);
+      setEnabledMinting(res.data);
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  }, []);
 
   // Create NFT
   const createNFT = async (e) => {
+    if (!enabledMinting.enabled) {
+      toast.error(
+        "you can't deploy"
+      );
+      return;
+    }
     e.preventDefault();
     const isValidNetwork = await _isValidChainId();
     if (!userAddress) {
