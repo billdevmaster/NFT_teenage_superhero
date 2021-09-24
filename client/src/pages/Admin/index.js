@@ -95,22 +95,23 @@ const Home = () => {
       //   "Qmf8rVgo2NZRVTvyv5nwEfzF8Z9ex8q4aentF8dgfhbQCX"
       // ];
       for (let i = 0; i < tokenIds.length; i++) {
-        const cid = await client.storeDirectory([
-          new File(
-            [
-              JSON.stringify({
-                // name: `Teenage SupreHero${tokenIds[i]}`,
-                description: 'This is Teenage Superhero NFT',
-                assetType: "image",
-                image: `http://teenagehero.fun/${tokenIds[i]}.png`,
-              }),
-            ],
-            'metadata.json'
-          ),
-        ]);
-        tokenURIs.push(`https://ipfs.io/ipfs/${cid}/metadata.json`)
+        // const cid = await client.storeDirectory([
+        //   new File(
+        //     [
+        //       JSON.stringify({
+        //         // name: `Teenage SupreHero${tokenIds[i]}`,
+        //         description: 'This is Teenage Superhero NFT',
+        //         assetType: "image",
+        //         image: `http://teenagehero.fun/${tokenIds[i]}.png`,
+        //       }),
+        //     ],
+        //     'metadata.json'
+        //   ),
+        // ]);
+        // console.log(cid);
+        // tokenURIs.push(`http://teenagehero.fun/${cid}/metadata.json`)
+        tokenURIs.push(`http://teenagehero.fun/${i}/metadata.json`)
       }
-      console.log(tokenURIs);
       try {
         const nftContract = getNFTContractInstance(CollectionAddress);
         const userAddress = await getDefaultAddres();
