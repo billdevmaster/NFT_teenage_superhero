@@ -83,83 +83,61 @@ const Home = () => {
       tokenIds.push(i);
     }
     let tokenURIs = [];
-    let imageResults = [];
     setIsMutliProcessing(true)
-    // axios.post("/api/getMultiTokenURIs", {tokenIds})
-    // .then( async res => {
-    //   console.log(res);
-    //   imageResults = res.data.data;
-      // imageResults = [
-      //   "QmdGWScpBZzq8vv8AXgWrnxcdYpBdKXddoob947VAiJYHt",
-      //   "QmWCZU8BBsegVdLR6xNzNmkGfPFM1Q7BRXZHJ8Y23xwSva",
-      //   "Qmf8rVgo2NZRVTvyv5nwEfzF8Z9ex8q4aentF8dgfhbQCX"
-      // ];
-      for (let i = 0; i < tokenIds.length; i++) {
-        const cid = await client.storeDirectory([
-          new File(
-            [
-              JSON.stringify({
-                // name: `Teenage SupreHero${tokenIds[i]}`,
-                description: 'This is Teenage Superhero NFT',
-                assetType: "image",
-                image: `http://teenagehero.fun/${tokenIds[i]}.png`,
-              }),
-            ],
-            'metadata.json'
-          ),
-        ]);
-        console.log(cid);
-        tokenURIs.push(`http://teenagehero.fun/${cid}/metadata.json`)
-        // tokenURIs.push(`http://teenagehero.fun/${i}/metadata.json`)
-      }
-      try {
-        const nftContract = getNFTContractInstance(CollectionAddress);
-        const userAddress = await getDefaultAddres();
-        // const tokenURI = `https://ipfs.io/ipfs/${cid}/metadata.json`;
-        const tx = await nftContract.methods
-        .setMultiTokenURIs(
-            tokenIds,
-            tokenURIs,
-          )
-          .send({from: userAddress});
-        
-        console.log('=== token TxHash ===', tx);
-
-        // force_update on openseas.
-        for (let i = 0; i < tokenIds.length; i++) {
-          let url = `${OpenseaApiUrl}/asset/${CollectionAddress.toLocaleLowerCase()}/${tokenIds[i]}?force_update=true`;
-          await axios.get(url)
-          .then( async res => {
-            await delay(1500)
+    axios.post("/api/makeMetaFiles", {tokenIds})
+    .then( async res => {
+      if (res.data.status === 'success') {
+        for (let i = 0; i < res.data.data.length; i++) {
+          tokenURIs.push(`http://teenagehero.fun/${res.data.data[i]}.json`)
+        }
+        try {
+          const nftContract = getNFTContractInstance(CollectionAddress);
+          const userAddress = await getDefaultAddres();
+          const tx = await nftContract.methods
+          .setMultiTokenURIs(
+              tokenIds,
+              tokenURIs,
+            )
+            .send({from: userAddress});
+          
+          console.log('=== token TxHash ===', tx);
+  
+          // force_update on openseas.
+          for (let i = 0; i < tokenIds.length; i++) {
+            let url = `${OpenseaApiUrl}/asset/${CollectionAddress.toLocaleLowerCase()}/${tokenIds[i]}?force_update=true`;
+            await axios.get(url)
+            .then( async res => {
+              await delay(1500)
+            })
+            .catch(err => {
+              console.log(err)
+            });
+            console.log("test**", i);
+          }
+  
+          // update server data
+          await axios.post('/api/updateMultiItem', {
+            tokenIds: tokenIds,
+            tokenURIs: tokenURIs,
+            // imageResults: `http://teenagehero.fun/${i}.png`,
+          })
+          .then(res => {
+            setIsMutliProcessing(false)
           })
           .catch(err => {
+            setIsMutliProcessing(false)
             console.log(err)
-          });
-          console.log("test**", i);
+          })
+          setIsMutliProcessing(false)
+        } catch (err) {
+          setIsMutliProcessing(false)
+          console.log(err);
         }
-
-        // update server data
-        await axios.post('/api/updateMultiItem', {
-          tokenIds: tokenIds,
-          tokenURIs: tokenURIs,
-          // imageResults: `http://teenagehero.fun/${i}.png`,
-        })
-        .then(res => {
-          setIsMutliProcessing(false)
-        })
-        .catch(err => {
-          setIsMutliProcessing(false)
-          console.log(err)
-        })
-        setIsMutliProcessing(false)
-      } catch (err) {
-        setIsMutliProcessing(false)
-        console.log(err);
       }
-    // })
-    // .catch(err => {
-    //   console.log(err)
-    // })
+    })
+    .catch(err => {
+      console.log(err)
+    })
   }
 
   const setOneNft = async () => {

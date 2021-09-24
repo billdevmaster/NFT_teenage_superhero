@@ -5,6 +5,7 @@ const IPFS = require('ipfs-api');
 const fs = require("fs")
 const Item = require("../models/itemModel");
 const ipfs = new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' });
+var crypto = require("crypto");
 
 const items = async (req, res) => {
     let query = {
@@ -194,6 +195,26 @@ const saveMultiItem = async (req, res) => {
     })
 }
 
+const makeMetaFiles = async ( req, res ) => {
+    const metadataPath = appRoot + '/assets/metadata/';
+    let i = 0;
+    let tokenURIs = [];
+    req.body.tokenIds.map( async tokenId => {
+        let filename = crypto.randomBytes(20).toString('hex');
+        let content = '{"description":"This is Teenage Superhero NFT","assetType":"image","image":"http://teenagehero.fun/' + tokenId + '.png"}';
+        await fs.writeFile(metadataPath + filename + ".json", content, function(err) {
+            if(err) {
+                return console.log(err);
+            }
+            tokenURIs.push(filename);
+            i++;
+            if (i == req.body.tokenIds.length) {
+                res.json({status: 'success', data: tokenURIs});
+            }
+        }); 
+    });
+}
+
 module.exports = {
     saveItem,
     viewItem,
@@ -207,5 +228,6 @@ module.exports = {
     getMintedCount,
     changeEnableMinting,
     getEnabled,
-    saveMultiItem
+    saveMultiItem,
+    makeMetaFiles
 };
