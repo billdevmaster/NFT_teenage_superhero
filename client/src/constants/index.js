@@ -2,7 +2,7 @@ export const TokenAddress = '0x4AD910956D7E08cC9b2BB0e991c9998ee86DDB8d';
 export const FactoryAddress = '0xa622BBa6700C063168feada0F5fba64BdEe0F876';
 export const AuctionAddress = '0x5702D005124b0EeF673202fd5d18ed7a012172e7';
 export const AuctionBNBAddress = '0x0A269272686D566Ca55D0BF88aBf0f3D4422f730';
-export const CollectionAddress = '0x417890ae23038742ae98fe48e01fe863ca8f6fe7';
+export const CollectionAddress = '0x8bab3b83f4b836353748db905abdf8e934f5d92f';
 
 export const NFTStorageKey =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDUxODlEMzhCRDVmMWE5MmU0RjIzNUVmMDExRTMzMjRiNUZDRkNjZTIiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTYyMDgwNDI1MjI0OSwibmFtZSI6Im1vb25zdGFyIn0.ioVYvZ_sYN-a89eGkMYJNPK-kRVx9vt0CdxGfQmtqg0';
