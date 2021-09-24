@@ -40,7 +40,7 @@ const App = () => {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/create" component={Publish} />
-          <Route exact path="/admin" component={Admin} />
+          <Route exact path="/teheadmin" component={Admin} />
           <Route path="/profile/:account?" component={Profile} />
         </Switch>
       </Router>

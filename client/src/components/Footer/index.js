@@ -37,12 +37,12 @@ const Footer = () => (
           <div className="col-lg-3 text-center">
             <ul className="list-inline social-nav">
               <li className="list-inline-item">
-                <a href="https://twitter.com/MoonStarToken" target="_blank" rel="noopener noreferrer">
+                <a href="https://twitter.com/digital_hero?s=09" target="_blank" rel="noopener noreferrer">
                   <i className="fab fa-twitter"></i>
                 </a>
               </li>
               <li className="list-inline-item">
-                <a href="https://discord.com/invite/bnVZC6JScn" target="_blank"  rel="noopener noreferrer">
+                <a href="https://discord.gg/B8j5R5VCtR" target="_blank"  rel="noopener noreferrer">
                   <i className="fab fa-discord"></i>
                 </a>
               </li>
